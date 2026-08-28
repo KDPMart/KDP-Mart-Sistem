@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#078047">
+  <title>KDP Scanner | KDP System</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+</head>
+<body class="app-page">
+  <div class="app-topbar">
+    <a href="index.html" class="back-btn">← KDP System</a>
+    <div class="app-page-title">KDP Scanner</div>
+    <a id="open-direct" href="#" target="_blank" rel="noopener" class="direct-btn">Buka langsung</a>
+  </div>
+
+  <div id="loading" class="loading-screen">
+    <div class="spinner"></div>
+    <div>Memuat KDP Scanner...</div>
+  </div>
+
+  <div id="error-box" class="error-box hidden">
+    URL aplikasi belum diisi di <code>config.js</code>.
+  </div>
+
+  <iframe id="app-frame" class="app-frame" title="KDP Scanner"></iframe>
+
+  <script>
+    (function () {
+      const cfg = window.KDP_PORTAL_CONFIG || {};
+      const url = cfg.kdpScannerUrl || "";
+      const valid = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/i.test(String(url).trim());
+
+      const frame = document.getElementById("app-frame");
+      const loading = document.getElementById("loading");
+      const errorBox = document.getElementById("error-box");
+      const direct = document.getElementById("open-direct");
+
+      if (!valid) {
+        loading.classList.add("hidden");
+        errorBox.classList.remove("hidden");
+        frame.classList.add("hidden");
+        direct.classList.add("hidden");
+        return;
+      }
+
+      direct.href = url;
+      frame.src = url;
+
+      frame.addEventListener("load", function () {
+        loading.classList.add("hidden");
+      });
+    })();
+  </script>
+</body>
+</html>
